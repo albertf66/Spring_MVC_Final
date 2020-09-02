@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.dao.UserMapper">
+
+	<resultMap type="user" id="result">
+		<id property="user_id" column="User_ID" />
+		<result property="user_name" column="User_Name" />
+		<result property="user_email" column="User_Email" />
+		<result property="user_pw" column="User_Password" />
+		<result property="user_phone" column="User_Phone" />
+		<result property="user_country" column="User_Country" />
+		<result property="user_status" column="User_Status" />
+	</resultMap>
+
+	<select id="getAllGuest" resultType="user" resultMap="result">
+		SELECT * FROM user WHERE User_Status = 'GUEST'
+	</select>
+
+	<insert id="addUser" parameterType="user" keyProperty="id"
+		useGeneratedKeys="true">
+		INSERT INTO user(User_Name,
+		User_Email, User_Password,
+		User_Phone, User_Country, User_Status)
+		VALUES(#{user_name},
+		#{user_email}, #{user_pw}, #{user_phone},
+		#{user_country},
+		#{user_status})
+	</insert>
+
+	<delete id="deleteUser" parameterType="int">
+		DELETE FROM user
+		WHERE
+		User_ID = #{userId}
+	</delete>
+
+	<select id="findById" parameterType="int" resultType="user"
+		resultMap="result">
+		SELECT * FROM user WHERE User_ID = #{userId}
+	</select>
+
+	<select id="findByEmail" parameterType="String"
+		resultType="user" resultMap="result">
+		SELECT * FROM user WHERE
+		User_Email =
+		#{user_email}
+	</select>
+
+	<update id="updateUser" parameterType="user">
+		UPDATE user SET
+		User_Name = #{user_name}, 
+		User_Email = #{user_email},
+		User_Password = #{user_pw},
+		User_Phone = #{user_phone},
+		User_Country = #{user_country}
+		WHERE User_ID = #{user_id}
+	</update>
+</mapper>
